@@ -9,7 +9,7 @@ stages:
   displayName:  Deploy Kusto end-2-end
   variables:  []
   jobs:
-  - job:  e2e-deploy
+  - job:  e2e_deploy
     pool:
       vmImage: 'ubuntu-latest'
     variables:  []
