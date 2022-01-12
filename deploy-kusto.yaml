@@ -10,12 +10,9 @@ stages:
   # Variables:  https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema#variables
   variables:
   # Those variables should be defined in the UI as they are specific to a given environment (e.g. cluster name)
-  - name:  clusterName
-    value:  NOT-PROVIDED
-  - name:  appId
-    value:  NOT-PROVIDED
-  - name:  appSecret
-    value:  NOT-PROVIDED
+  # clusterName:  Name of Azure Data Explorer cluster
+  # appId:  Client ID of the service principal used to interact with the cluster
+  # appSecret:  Secret of the service principal
   jobs:
   - job:  e2e_deploy
     pool:
