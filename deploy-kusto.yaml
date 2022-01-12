@@ -7,33 +7,45 @@ resources:
 stages:
 - stage:  deploy_kusto
   displayName:  Deploy Kusto end-2-end
-  variables:  []
+  # Variables:  https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema#variables
+  variables:
+  # Those variables should be defined in the UI as they are specific to a given environment (e.g. cluster name)
+  - name:  clusterName
+    value:  NOT-PROVIDED
+  - name:  appId
+    value:  NOT-PROVIDED
+  - name:  appSecret
+    value:  NOT-PROVIDED
+  - name:
   jobs:
   - job:  e2e_deploy
     pool:
       vmImage: 'ubuntu-latest'
     variables:  []
     steps:
+    # Infrastructure
     # ARM Template:  https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-resource-group-deployment
     - task: AzureResourceManagerTemplateDeployment@3
-      displayName:  ARM Template deployment
+      displayName:  Infrastructure
       inputs:
         deploymentScope: 'Resource Group'
+        # Here we don't specify the subscriptionId nor resourceGroupName
+        # because they are already specified in our service connection
         azureResourceManagerConnection: 'vp-auto-kusto-article'
-        # subscriptionId: '69a0e064-0dce-4437-96ef-7105728ff58e'
-        # resourceGroupName: 'vp-article'
         action: 'Create Or Update Resource Group'
         location: 'East US'
         templateLocation: 'Linked artifact'
         csmFile: kusto-infra.json
         overrideParameters:  "-clusterName $(CLUSTERNAME)"
         deploymentMode: 'Incremental'
+    # Schema Entities
     # To install the Azure Data Explorer - Pipeline tool extension, see https://docs.microsoft.com/en-us/azure/data-explorer/devops
     - task: PublishToADX@1
+      displayName:  Schema Entities
       inputs:
         files: 'MyDatabase.kql'
         parallelCommands: false
         kustoUrls: 'https://$(CLUSTERNAME).kusto.windows.net:443?DatabaseName=myDatabase'
         customAuth: false
-        aadClientId: 'myid'
-        aadClientSecret: 'my-secret'
+        aadClientId: $(APPID)
+        aadClientSecret: $(APPSECRET)
