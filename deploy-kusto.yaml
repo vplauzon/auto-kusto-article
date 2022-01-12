@@ -11,7 +11,7 @@ stages:
   variables: []
   # Those variables should be defined in the UI as they are specific to a given environment (e.g. cluster name)
   #   clusterName:  Name of Azure Data Explorer cluster
-  #   serviceConnection:  Name of Azure DevOps connection used to deploy and interact with ADX cluster
+  #   serviceConnection:  Name of Azure DevOps connection used to ARM-deploy
   #   appId:  Client ID of the service principal used to interact with the cluster
   #   appSecret:  Secret of the service principal
   jobs:
@@ -43,7 +43,6 @@ stages:
         files: 'MyDatabase.kql'
         parallelCommands: false
         kustoUrls: https://$(CLUSTERNAME).kusto.windows.net:443?DatabaseName=myDatabase
-        customAuth: true
-        connectedServiceName:  $(serviceConnection)
-        # aadClientId: $(APPID)
-        # aadClientSecret: $(APPSECRET)
+        customAuth: false
+        aadClientId: $(APPID)
+        aadClientSecret: $(APPSECRET)
