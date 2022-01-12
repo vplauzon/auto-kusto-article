@@ -37,12 +37,12 @@ stages:
         deploymentMode: 'Incremental'
     # Schema Entities
     # To install the Azure Data Explorer - Pipeline tool extension, see https://docs.microsoft.com/en-us/azure/data-explorer/devops
-    - task: PublishToADX@1
+    - task: Azure-Kusto.PublishToADX.PublishToADX.PublishToADX@1
       displayName:  Schema Entities
       inputs:
         files: 'MyDatabase.kql'
         parallelCommands: false
-        kustoUrls: https://$(CLUSTERNAME).kusto.windows.net:443?DatabaseName=myDatabase
+        kustoUrls: "https://$(CLUSTERNAME).kusto.windows.net:443?DatabaseName=myDatabase"
         customAuth: false
         aadClientId: $(APPID)
         aadClientSecret: $(APPSECRET)
