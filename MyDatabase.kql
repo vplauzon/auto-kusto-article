@@ -1,0 +1,3 @@
+.create table Customer(CustomerName:string, CustomerAddress:string)
+
+.create table CustomerLogs(CustomerName:string, Log:string)

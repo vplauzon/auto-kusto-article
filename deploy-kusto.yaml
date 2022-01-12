@@ -20,12 +20,20 @@ stages:
       inputs:
         deploymentScope: 'Resource Group'
         azureResourceManagerConnection: 'vp-auto-kusto-article'
-        subscriptionId: '69a0e064-0dce-4437-96ef-7105728ff58e'
+        # subscriptionId: '69a0e064-0dce-4437-96ef-7105728ff58e'
+        # resourceGroupName: 'vp-article'
         action: 'Create Or Update Resource Group'
-        resourceGroupName: 'vp-article'
         location: 'East US'
         templateLocation: 'Linked artifact'
         csmFile: kusto-infra.json
+        overrideParameters:  "-clusterName $(CLUSTERNAME)"
         deploymentMode: 'Incremental'
     # To install the Azure Data Explorer - Pipeline tool extension, see https://docs.microsoft.com/en-us/azure/data-explorer/devops
-    
+    - task: PublishToADX@1
+      inputs:
+        files: 'MyDatabase.kql'
+        parallelCommands: false
+        kustoUrls: 'https://$(CLUSTERNAME).kusto.windows.net:443?DatabaseName=myDatabase'
+        customAuth: false
+        aadClientId: 'myid'
+        aadClientSecret: 'my-secret'
