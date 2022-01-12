@@ -26,6 +26,7 @@
                     "dependsOn": [
                         "[resourceId('Microsoft.Kusto/clusters', variables('Cluster Name'))]"
                     ],
+                    "kind": "ReadWrite",
                     "properties": {
                         "softDeletePeriodInDays": 365,
                         "hotCachePeriodInDays": 31
