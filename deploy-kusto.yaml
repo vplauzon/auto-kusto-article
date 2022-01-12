@@ -11,6 +11,7 @@ stages:
   variables: []
   # Those variables should be defined in the UI as they are specific to a given environment (e.g. cluster name)
   #   clusterName:  Name of Azure Data Explorer cluster
+  #   serviceConnection:  Name of Azure DevOps connection used to deploy and interact with ADX cluster
   #   appId:  Client ID of the service principal used to interact with the cluster
   #   appSecret:  Secret of the service principal
   jobs:
@@ -27,7 +28,7 @@ stages:
         deploymentScope: 'Resource Group'
         # Here we don't specify the subscriptionId nor resourceGroupName
         # because they are already specified in our service connection
-        azureResourceManagerConnection: 'vp-auto-kusto-article'
+        azureResourceManagerConnection: $(serviceConnection)
         action: 'Create Or Update Resource Group'
         location: 'East US'
         templateLocation: 'Linked artifact'
@@ -41,7 +42,8 @@ stages:
       inputs:
         files: 'MyDatabase.kql'
         parallelCommands: false
-        kustoUrls: 'https://$(CLUSTERNAME).kusto.windows.net:443?DatabaseName=myDatabase'
-        customAuth: false
-        aadClientId: $(APPID)
-        aadClientSecret: $(APPSECRET)
+        kustoUrls: https://$(CLUSTERNAME).kusto.windows.net:443?DatabaseName=myDatabase
+        customAuth: true
+        connectedServiceName:  $(serviceConnection)
+        # aadClientId: $(APPID)
+        # aadClientSecret: $(APPSECRET)
