@@ -15,6 +15,15 @@ stages:
     variables:  []
     steps:
     # Bash script:  https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema#bash
-    - bash:  |
-        echo hi!
+    - task: AzureResourceManagerTemplateDeployment@3
       displayName:  ARM Template deployment
+      inputs:
+        deploymentScope: 'Resource Group'
+        azureResourceManagerConnection: 'vp-auto-kusto-article'
+        subscriptionId: '69a0e064-0dce-4437-96ef-7105728ff58e'
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: 'vp-article'
+        location: 'East US'
+        templateLocation: 'Linked artifact'
+        csmFile: 'mytemplate.json'
+        deploymentMode: 'Incremental'
