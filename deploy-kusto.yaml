@@ -16,7 +16,6 @@ stages:
     value:  NOT-PROVIDED
   - name:  appSecret
     value:  NOT-PROVIDED
-  - name:
   jobs:
   - job:  e2e_deploy
     pool:
