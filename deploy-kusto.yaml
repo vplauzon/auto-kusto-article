@@ -14,7 +14,8 @@ stages:
       vmImage: 'ubuntu-latest'
     variables:  []
     steps:
-    # Bash script:  https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema#bash
+    - bash:  ls -l
+    # ARM Template:  https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-resource-group-deployment
     - task: AzureResourceManagerTemplateDeployment@3
       displayName:  ARM Template deployment
       inputs:
@@ -25,5 +26,5 @@ stages:
         resourceGroupName: 'vp-article'
         location: 'East US'
         templateLocation: 'Linked artifact'
-        csmFile: kusto-cluster.json
+        csmFile: kusto-infra.json
         deploymentMode: 'Incremental'
