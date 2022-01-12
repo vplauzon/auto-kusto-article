@@ -1,0 +1,20 @@
+# YAML doc:  https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema
+
+resources:
+- repo: self
+
+# Stages:  https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema#stage
+stages:
+- stage:  deploy_kusto
+  displayName:  Deploy Kusto end-2-end
+  variables:  []
+  jobs:
+  - job:  e2e-deploy
+    pool:
+      vmImage: 'ubuntu-latest'
+    variables:  []
+    steps:
+    # Bash script:  https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema#bash
+    - bash:  |
+        echo hi!
+      displayName:  ARM Template deployment
