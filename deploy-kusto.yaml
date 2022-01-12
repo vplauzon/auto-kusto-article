@@ -25,5 +25,5 @@ stages:
         resourceGroupName: 'vp-article'
         location: 'East US'
         templateLocation: 'Linked artifact'
-        csmFile: 'mytemplate.json'
+        csmFile: kusto-cluster.json
         deploymentMode: 'Incremental'
