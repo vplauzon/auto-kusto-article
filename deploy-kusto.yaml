@@ -30,6 +30,9 @@ stages:
       displayName:  Download Kusto.Tools Nuget package
     # Schema Entities
     # Run Kusto.CLI
+    - bash:  ls -l
+    - bash:  ls -l kusto.tools
+    - bash:  ls -l kusto.tools/tools
     - bash:  |
         # Define the connection string to the cluster's database, including service principal's credentials
         connectionString="https://$(CLUSTERNAME).kusto.windows.net/myDatabase;Fed=true;AppClientId=$(appId);AppKey=$(appSecret);Authority Id=$(appTenantId)"
