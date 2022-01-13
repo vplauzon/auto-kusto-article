@@ -14,12 +14,20 @@ stages:
   #   serviceConnection:  Name of Azure DevOps connection used to ARM-deploy
   #   appId:  Client ID of the service principal used to interact with the cluster
   #   appSecret:  Secret of the service principal
+  #   appTenantId:  Tenant ID of the service principal
   jobs:
   - job:  e2e_deploy
     pool:
       vmImage: 'ubuntu-latest'
     variables:  []
     steps:
+    # Download Microsoft.Azure.Kusto.Tools
+    - bash:  |
+        # Download from nuget.org
+        nuget install Microsoft.Azure.Kusto.Tools
+        # Rename the folder (including the most recent version)
+        mv Microsoft.Azure.Kusto.Tools.* kusto.tools
+      displayName:  Schema Entities
     # Infrastructure
     # ARM Template:  https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-resource-group-deployment
     - task: AzureResourceManagerTemplateDeployment@3
@@ -36,14 +44,10 @@ stages:
         overrideParameters:  "-clusterName $(CLUSTERNAME)"
         deploymentMode: 'Incremental'
     # Schema Entities
-    # To install the Azure Data Explorer - Pipeline tool extension, see https://docs.microsoft.com/en-us/azure/data-explorer/devops
-    - task: Azure-Kusto.PublishToADX.PublishToADX.PublishToADX@1
+    # Run Kusto.CLI
+    - bash:  |
+        # Define the connection string to the cluster's database, including service principal's credentials
+        connectionString="https://$(CLUSTERNAME).kusto.windows.net/myDatabase;Fed=true;AppClientId=$(appId);AppKey=$(appSecret);Authority Id=$(appTenantId)"
+        # Execute a KQL script against the database
+        dotnet kusto.tools/tools/Kusto.Cli.exe $connectionString -script MyDatabase.kql
       displayName:  Schema Entities
-      inputs:
-        files: 'MyDatabase.kql'
-        parallelCommands: false
-        kustoUrls: https://$(CLUSTERNAME).kusto.windows.net:443?DatabaseName=myDatabase
-        # ResourceURI: https://$(CLUSTERNAME).kusto.windows.net
-        customAuth: false
-        aadClientId: $(APPID)
-        aadClientSecret: $(APPSECRET)
