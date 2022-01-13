@@ -28,6 +28,11 @@ stages:
         # Rename the folder (including the most recent version)
         mv Microsoft.Azure.Kusto.Tools.* kusto.tools
       displayName:  Download Kusto.Tools Nuget package
+    # Install .NET core version compatible with Kusto tools
+    - task: UseDotNet@2
+      inputs:
+        version: '2.1.0'
+        packageType: runtime
     # Schema Entities
     # Run Kusto.CLI
     - bash:  ls -l
