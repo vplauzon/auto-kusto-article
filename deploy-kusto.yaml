@@ -27,6 +27,14 @@ stages:
         nuget install Microsoft.Azure.Kusto.Tools
         # Rename the folder (including the most recent version)
         mv Microsoft.Azure.Kusto.Tools.* kusto.tools
+      displayName:  Download Kusto.Tools Nuget package
+    # Schema Entities
+    # Run Kusto.CLI
+    - bash:  |
+        # Define the connection string to the cluster's database, including service principal's credentials
+        connectionString="https://$(CLUSTERNAME).kusto.windows.net/myDatabase;Fed=true;AppClientId=$(appId);AppKey=$(appSecret);Authority Id=$(appTenantId)"
+        # Execute a KQL script against the database
+        kusto.tools/tools/Kusto.Cli.exe $connectionString -script MyDatabase.kql
       displayName:  Schema Entities
     # Infrastructure
     # ARM Template:  https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-resource-group-deployment
@@ -43,11 +51,3 @@ stages:
         csmFile: kusto-infra.json
         overrideParameters:  "-clusterName $(CLUSTERNAME)"
         deploymentMode: 'Incremental'
-    # Schema Entities
-    # Run Kusto.CLI
-    - bash:  |
-        # Define the connection string to the cluster's database, including service principal's credentials
-        connectionString="https://$(CLUSTERNAME).kusto.windows.net/myDatabase;Fed=true;AppClientId=$(appId);AppKey=$(appSecret);Authority Id=$(appTenantId)"
-        # Execute a KQL script against the database
-        dotnet kusto.tools/tools/Kusto.Cli.exe $connectionString -script MyDatabase.kql
-      displayName:  Schema Entities
