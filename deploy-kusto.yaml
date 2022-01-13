@@ -42,7 +42,7 @@ stages:
       inputs:
         files: 'MyDatabase.kql'
         parallelCommands: false
-        kustoUrls: https://$(CLUSTERNAME).kusto.windows.net?DatabaseName=myDatabase
+        kustoUrls: https://$(CLUSTERNAME).kusto.windows.net:443;fed=true?DatabaseName=myDatabase
         ResourceURI: https://$(CLUSTERNAME).kusto.windows.net
         customAuth: false
         aadClientId: $(APPID)
