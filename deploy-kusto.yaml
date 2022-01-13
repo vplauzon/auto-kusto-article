@@ -21,7 +21,7 @@ stages:
       vmImage: 'ubuntu-latest'
     variables:  []
     steps:
-    # Download Microsoft.Azure.Kusto.Tools
+    # Download Microsoft.Azure.Kusto.Tools.NETCore
     - bash:  |
         # Download from nuget.org
         nuget install Microsoft.Azure.Kusto.Tools
@@ -34,7 +34,7 @@ stages:
         # Define the connection string to the cluster's database, including service principal's credentials
         connectionString="https://$(CLUSTERNAME).kusto.windows.net/myDatabase;Fed=true;AppClientId=$(appId);AppKey=$(appSecret);Authority Id=$(appTenantId)"
         # Execute a KQL script against the database
-        kusto.tools/tools/Kusto.Cli.exe $connectionString -script MyDatabase.kql
+        dotnet kusto.tools/tools/Kusto.Cli.dll $connectionString -script MyDatabase.kql
       displayName:  Schema Entities
     # Infrastructure
     # ARM Template:  https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-resource-group-deployment
