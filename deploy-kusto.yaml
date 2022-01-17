@@ -18,21 +18,16 @@ stages:
   jobs:
   - job:  e2e_deploy
     pool:
-      vmImage: 'ubuntu-latest'
+      vmImage: Windows
     variables:  []
     steps:
-    # Download Microsoft.Azure.Kusto.Tools.NETCore
+    # Download Microsoft.Azure.Kusto.Tools
     - bash:  |
         # Download from nuget.org
-        nuget install Microsoft.Azure.Kusto.Tools.NETCore
+        nuget install Microsoft.Azure.Kusto.Tools
         # Rename the folder (including the most recent version)
         mv Microsoft.Azure.Kusto.Tools.* kusto.tools
       displayName:  Download Kusto.Tools Nuget package
-    # Install .NET core version compatible with Kusto tools
-    - task: UseDotNet@2
-      inputs:
-        version: '2.1.0'
-        packageType: runtime
     # Schema Entities
     # Run Kusto.CLI
     - bash:  ls -l
@@ -42,8 +37,7 @@ stages:
         # Define the connection string to the cluster's database, including service principal's credentials
         connectionString="https://$(CLUSTERNAME).kusto.windows.net/myDatabase;Fed=true;AppClientId=$(appId);AppKey=$(appSecret);Authority Id=$(appTenantId)"
         # Execute a KQL script against the database
-        cp kusto.tools/tools/Kusto.Cli.dll .
-        dotnet Kusto.Cli.dll $connectionString -script MyDatabase.kql
+        kusto.tools/tools/Kusto.Cli $connectionString -script MyDatabase.kql
       displayName:  Schema Entities
     # Infrastructure
     # ARM Template:  https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-resource-group-deployment
