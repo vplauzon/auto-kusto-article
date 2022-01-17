@@ -32,7 +32,7 @@ stages:
     # Run Kusto.CLI
     - bash:  |
         # Define the connection string to the cluster's database, including service principal's credentials
-        connectionString="https://$(CLUSTERNAME).kusto.windows.net/myDatabase;Fed=true;AppClientId=$(appId);AppKey=$(appSecret);Authority Id=$(appTenantId)"
+        connectionString="https://$(CLUSTERNAME).kusto.windows.net/myDatabase;Fed=true;AppClientId=$(appId);AppKey=$(appSecret);TenantId=$(appTenantId)"
         echo "connectionString:  $connectionString"
         # Execute a KQL script against the database
         kusto.tools/tools/Kusto.Cli $connectionString -script MyDatabase.kql
