@@ -18,7 +18,7 @@ stages:
   jobs:
   - job:  e2e_deploy
     pool:
-      vmImage: Windows
+      vmImage: windows-latest
     variables:  []
     steps:
     # Download Microsoft.Azure.Kusto.Tools
