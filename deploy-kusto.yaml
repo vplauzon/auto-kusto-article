@@ -47,7 +47,7 @@ stages:
         # because they are already specified in our service connection
         azureResourceManagerConnection: $(serviceConnection)
         action: 'Create Or Update Resource Group'
-        location: 'East US'
+        location: eastus
         templateLocation: 'Linked artifact'
         csmFile: kusto-infra.json
         overrideParameters:  "-clusterName $(CLUSTERNAME)"
