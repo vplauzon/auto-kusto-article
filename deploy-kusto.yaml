@@ -29,6 +29,15 @@ stages:
         # Rename the folder (including the most recent version)
         mv Microsoft.Azure.Kusto.Tools.* kusto.tools
       displayName:  Download Kusto.Tools Nuget package
+    # Ingest Data
+    # Run LightIngest
+    - bash:  |
+        # Define the connection string to the cluster's database, including service principal's credentials
+        connectionString="ingest-$(CLUSTERNAME).$(location).kusto.windows.net/myDatabase;Fed=true;AppClientId=$(appId);AppKey=$(appSecret);TenantId=$(appTenantId)"
+        echo "connectionString:  $connectionString"
+        # Execute a KQL script against the database
+        kusto.tools/tools/LightIngest $connectionString -table:Customer -source:customers.csv -format:csv -ignoreFirst:true
+      displayName:  Schema Entities
     # Schema Entities
     # Run Kusto.CLI
     - bash:  |
