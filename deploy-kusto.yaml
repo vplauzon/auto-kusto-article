@@ -33,10 +33,10 @@ stages:
     # Run LightIngest
     - bash:  |
         # Define the connection string to the cluster's database, including service principal's credentials
-        connectionString="https://$(CLUSTERNAME).$(location).kusto.windows.net/myDatabase;Fed=true;AppClientId=$(appId);AppKey=$(appSecret);TenantId=$(appTenantId)"
+        connectionString="https://ingest-$(CLUSTERNAME).$(location).kusto.windows.net/myDatabase;Fed=true;AppClientId=$(appId);AppKey=$(appSecret);TenantId=$(appTenantId)"
         echo "connectionString:  $connectionString"
         # Execute a KQL script against the database
-        kusto.tools/tools/LightIngest $connectionString -table:Customer -sourcePath:"file://customers.csv" -format:csv -ignoreFirst:true
+        kusto.tools/tools/LightIngest $connectionString -table:Customer -sourcePath:"customers.csv" -format:csv -ignoreFirst:true
       displayName:  Ingest Data
     # Schema Entities
     # Run Kusto.CLI
