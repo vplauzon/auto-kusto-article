@@ -15,6 +15,7 @@ stages:
   #   appId:  Client ID of the service principal used to interact with the cluster
   #   appSecret:  Secret of the service principal
   #   appTenantId:  Tenant ID of the service principal
+  #   location:  Azure region, e.g. eastus
   jobs:
   - job:  e2e_deploy
     pool:
@@ -32,10 +33,10 @@ stages:
     # Run Kusto.CLI
     - bash:  |
         # Define the connection string to the cluster's database, including service principal's credentials
-        connectionString="https://$(CLUSTERNAME).kusto.windows.net/myDatabase;Fed=true;AppClientId=$(appId);AppKey=$(appSecret);TenantId=$(appTenantId)"
+        connectionString="https://$(CLUSTERNAME).$(location).kusto.windows.net/myDatabase;Fed=true;AppClientId=$(appId);AppKey=$(appSecret);TenantId=$(appTenantId)"
         echo "connectionString:  $connectionString"
         # Execute a KQL script against the database
-        # kusto.tools/tools/Kusto.Cli $connectionString -script:MyDatabase.kql
+        kusto.tools/tools/Kusto.Cli $connectionString -script:MyDatabase.kql
       displayName:  Schema Entities
     # Infrastructure
     # ARM Template:  https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-resource-group-deployment
@@ -47,7 +48,7 @@ stages:
         # because they are already specified in our service connection
         azureResourceManagerConnection: $(serviceConnection)
         action: 'Create Or Update Resource Group'
-        location: eastus
+        location: $(location)
         templateLocation: 'Linked artifact'
         csmFile: kusto-infra.json
         overrideParameters:  "-clusterName $(CLUSTERNAME)"
