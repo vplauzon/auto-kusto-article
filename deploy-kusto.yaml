@@ -33,7 +33,7 @@ stages:
     # Run LightIngest
     - bash:  |
         # Define the connection string to the cluster's database, including service principal's credentials
-        connectionString="https://$(CLUSTERNAME).$(location).kusto.windows.net/myDatabase;Fed=true;AppClientId=$(appId);AppKey=$(appSecret);TenantId=$(appTenantId)"
+        connectionString="https://ingest-$(CLUSTERNAME).$(location).kusto.windows.net/myDatabase;Fed=true;AppClientId=$(appId);AppKey=$(appSecret);TenantId=$(appTenantId)"
         echo "connectionString:  $connectionString"
         # Define absolute path for CSV file
         filePath="$(pwd)/customers.csv"
