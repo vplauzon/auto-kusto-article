@@ -35,13 +35,10 @@ stages:
     - bash:  ls -l D:/a/1/s/
     - bash:  |
         # Define the connection string to the cluster's database, including service principal's credentials
-        connectionString="https://$(CLUSTERNAME).$(location).kusto.windows.net/myDatabase;Fed=true;AppClientId=$(appId);AppKey=$(appSecret);TenantId=$(appTenantId)"
+        connectionString="https://ingest-$(CLUSTERNAME).$(location).kusto.windows.net/myDatabase;Fed=true;AppClientId=$(appId);AppKey=$(appSecret);TenantId=$(appTenantId)"
         echo "connectionString:  $connectionString"
-        # Define absolute path for CSV file
-        filePath="customers.csv"
-        echo "filePath:  $filePath"
         # Execute a KQL script against the database
-        kusto.tools/tools/LightIngest $connectionString -table:Customer -sourcePath:"$filePath" -format:csv -ignoreFirst:true
+        kusto.tools/tools/LightIngest $connectionString -table:Customer -sourcePath:customers.csv -format:csv -ignoreFirst:true
       displayName:  Ingest Data
     # Schema Entities
     # Run Kusto.CLI
