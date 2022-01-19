@@ -38,7 +38,7 @@ stages:
         connectionString="https://$(CLUSTERNAME).$(location).kusto.windows.net/myDatabase;Fed=true;AppClientId=$(appId);AppKey=$(appSecret);TenantId=$(appTenantId)"
         echo "connectionString:  $connectionString"
         # Define absolute path for CSV file
-        filePath="$(pwd)/customers.csv"
+        filePath="customers.csv"
         echo "filePath:  $filePath"
         # Execute a KQL script against the database
         kusto.tools/tools/LightIngest $connectionString -table:Customer -sourcePath:"$filePath" -format:csv -ignoreFirst:true
