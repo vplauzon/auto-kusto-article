@@ -36,7 +36,7 @@ stages:
         connectionString="https://ingest-$(CLUSTERNAME).$(location).kusto.windows.net/myDatabase;Fed=true;AppClientId=$(appId);AppKey=$(appSecret);TenantId=$(appTenantId)"
         echo "connectionString:  $connectionString"
         # Execute a KQL script against the database
-        kusto.tools/tools/LightIngest $connectionString -table:Customer -sourcePath:customers.csv -format:csv -ignoreFirst:true -listOnly:true
+        kusto.tools/tools/LightIngest $connectionString -table:Customer -sourcePath:customers.csv -format:csv -ignoreFirst:true
       displayName:  Ingest Data
     # Schema Entities
     # Run Kusto.CLI
