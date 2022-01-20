@@ -25,7 +25,7 @@ stages:
     # Download Microsoft.Azure.Kusto.Tools
     - bash:  |
         # Download from nuget.org
-        nuget install Microsoft.Azure.Kusto.Tools
+        nuget install Microsoft.Azure.Kusto.Tools --version 5.3.1
         # Rename the folder (including the most recent version)
         mv Microsoft.Azure.Kusto.Tools.* kusto.tools
       displayName:  Download Kusto.Tools Nuget package
