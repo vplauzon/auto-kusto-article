@@ -31,11 +31,9 @@ stages:
       displayName:  Download Kusto.Tools Nuget package
     # Ingest Data
     # Run LightIngest
-    - bash:  ls -l
-    - bash:  ls -l D:/a/1/s/
     - bash:  |
         # Define the connection string to the cluster's database, including service principal's credentials
-        connectionString="https://ingest-$(CLUSTERNAME).$(location).kusto.windows.net/myDatabase;Fed=true;AppClientId=$(appId);AppKey=$(appSecret);TenantId=$(appTenantId)"
+        connectionString="https://$(CLUSTERNAME).$(location).kusto.windows.net/myDatabase;Fed=true;AppClientId=$(appId);AppKey=$(appSecret);TenantId=$(appTenantId)"
         echo "connectionString:  $connectionString"
         # Execute a KQL script against the database
         kusto.tools/tools/LightIngest $connectionString -table:Customer -sourcePath:customers.csv -format:csv -ignoreFirst:true
